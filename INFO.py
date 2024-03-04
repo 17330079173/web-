@@ -10,6 +10,8 @@ import argparse
 
 visited_urls = set()
 
+#有好的建议可以邮箱发我进行升级改善···
+
 print("""
 
            _____                 _                 

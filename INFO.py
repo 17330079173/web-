@@ -10,19 +10,17 @@ import argparse
 
 visited_urls = set()
 
-#有好的建议可以邮箱发我进行升级改善···
-
 print("""
 
-           _____                 _                 
-   |  ___|  _   _   ___  (_)   ___    _ __  
-   | |_    | | | | / __| | |  / _ \  | '_ \ 
-   |  _|   | |_| | \__ \ | | | (_) | | | | |
-   |_|      \__,_| |___/ |_|  \___/  |_| |_|
+ .------..------..------.
+|L.--. ||Y.--. ||G.--. |
+| :/\: || (\/) || :/\: |
+| (__) || :\/: || :\/: |
+| '--'L|| '--'Y|| '--'G|
+`------'`------'`------'
                                             
-
-      [+] Fusion---VSion_0.01\n
-      [+] Liuyaoge-17330079173@163.com
+      [+] Fusion---VSion_2.0版本\n
+      [+] phone:MTczMzAwNzkxNzM=    
       [+]python info.py -u <目标> || python info.py -r <文件>\n
       [-] 无限遍历获取所有信息，并且拥有高并发功能，让成果丝滑顺畅\n
 
@@ -60,6 +58,21 @@ def collect_urls(url):
                 file_url = urljoin(url, link['href'])
                 if file_url.endswith('.zip') or file_url.endswith('.rar') or file_url.endswith('.exe'):
                     print(f"File URL: {file_url}")
+
+            for link in soup.find_all('html',href=True):
+                file_url = urljoin(url, link['html'])
+                if file_url.endswith('.txt')or file_url.endswith('.html'):
+                    print(f"File URL: {file_url}")
+                else:
+                    break
+
+            for link in soup.find_all('img', href=True):
+                file_url = urljoin(url, link['src'])
+                if file_url.endswith('.jpg') or file_url.endswith('.icon') or file_url.endswith('.png'):
+                    print(f"File URL: {file_url}")
+                else:
+                    break
+
     except Exception as e:
         print(f"Error accessing URL: {url}, {e}")
 
@@ -76,11 +89,12 @@ def main():
     start_url = args.url
 
     for _ in range(args.repeat):
-        with ThreadPoolExecutor(max_workers=10) as executor:
+        with ThreadPoolExecutor(max_workers=50) as executor:
             executor.submit(collect_urls, start_url)
 
 
 if __name__ == '__main__':
     main()
+
 
 
